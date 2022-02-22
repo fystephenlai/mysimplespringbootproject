@@ -1,0 +1,15 @@
+steps:
+- name: maven:3-jdk-11
+  entrypoint: mvn
+  args: ['package','-Dmaven.test.skip=true']
+  
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/${_REPO_PATH}/${_IMAGE}:${TAG_NAME}', '-t', 'gcr.io/${_REPO_PATH}/${_IMAGE}:latest', '.']
+  
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/${_REPO_PATH}/${_IMAGE}']
+
+images: ['gcr.io/${_REPO_PATH}/${_IMAGE}']
+
+substitutions:
+  _IMAGE: mssbp
